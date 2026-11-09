@@ -6,14 +6,6 @@ export default function MemoryCard({ handleClick, data, selectedCards, matchedCa
         const selectedCardEntry = selectedCards.find(emoji => emoji.index === index)
         const matchedCardEntry = matchedCards.find(emoji => emoji.index === index)
 
-    /**
-     * Challenge:
-     * 1) Create a new variable, "cardStyle", and conditionally assign it a value depending on whether a card is selected, matched or neither. Use the following values:
-     *      a) Selected card: "card-item--selected".
-     *      b) Matched card: "card-item--matched".
-     *      c) Neither: "".
-     * 2) Add "cardStyle" to the existing class set on the li element.
-     */
 
         const btnStyle = matchedCardEntry ? "card-item--matched" : 
 

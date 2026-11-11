@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import RegularButton from './RegularButton'
 
 export default function GameOver({ handleClick }) {
@@ -9,7 +9,11 @@ export default function GameOver({ handleClick }) {
     }, [])
     
     return (
-        <div className="wrapper wrapper--accent" ref={divRef} tabIndex={-1}>
+        <div
+            className="wrapper wrapper--accent"
+            tabIndex={0}
+            ref={divRef}
+        >
             <p className="p--large">You've matched all the memory cards!</p>
             <RegularButton handleClick={handleClick}>
                 Play again

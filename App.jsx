@@ -3,13 +3,19 @@ import Form from '/components/Form'
 import MemoryCard from '/components/MemoryCard'
 import AssistiveTechInfo from '/components/AssistiveTechInfo'
 import GameOver from '/components/GameOver'
+import ErrorCard from '/components/ErrorCard'
 
 export default function App() {
+    const initialFormData = {category: "animals-and-nature", number: 10}
+    
+    const [isFirstRender, setIsFirstRender] = useState(true)
+    const [formData, setFormData] = useState(initialFormData)
     const [isGameOn, setIsGameOn] = useState(false)
     const [emojisData, setEmojisData] = useState([])
     const [selectedCards, setSelectedCards] = useState([])
     const [matchedCards, setMatchedCards] = useState([])
     const [areAllCardsMatched, setAreAllCardsMatched] = useState(false)
+    const [isError, setIsError] = useState(false)
     
     useEffect(() => {
         if (selectedCards.length === 2 && selectedCards[0].name === selectedCards[1].name) {
@@ -23,11 +29,15 @@ export default function App() {
         }
     }, [matchedCards])
     
+    function handleFormChange(e) {
+        setFormData(prevFormData => ({...prevFormData, [e.target.name]: e.target.value}))
+    }
+    
     async function startGame(e) {
         e.preventDefault()
         
         try {
-            const response = await fetch("https://emojihub.yurace.pro/api/all/category/animals-and-nature")
+            const response = await fetch(`https://emojihub.yurace.pro/api/all/category/${formData.category}`)
             
             if (!response.ok) {
                 throw new Error("Could not fetch data from API")
@@ -41,7 +51,10 @@ export default function App() {
             setIsGameOn(true)
         } catch(err) {
             console.error(err)
-        }   
+            setIsError(true)
+        } finally {
+            setIsFirstRender(false)            
+        }
     }
 
     async function getDataSlice(data) {
@@ -58,7 +71,7 @@ export default function App() {
     function getRandomIndices(data) {        
         const randomIndicesArray = []
  
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < (formData.number / 2); i++) {
             const randomNum = Math.floor(Math.random() * data.length)
             if (!randomIndicesArray.includes(randomNum)) {
                 randomIndicesArray.push(randomNum)
@@ -98,10 +111,20 @@ export default function App() {
         setAreAllCardsMatched(false)
     }
     
+    function resetError() {
+        setIsError(false)
+    }
+    
     return (
         <main>
             <h1>Memory</h1>
-            {!isGameOn && <Form handleSubmit={startGame} />}
+            {!isGameOn && !isError &&
+                <Form
+                    handleSubmit={startGame}
+                    handleChange={handleFormChange}
+                    isFirstRender={isFirstRender}
+                />
+            }
             {isGameOn && !areAllCardsMatched &&
                 <AssistiveTechInfo emojisData={emojisData} matchedCards={matchedCards} />}
             {areAllCardsMatched && <GameOver handleClick={resetGame} />}
@@ -113,6 +136,7 @@ export default function App() {
                     matchedCards={matchedCards}
                 />
             }
+            {isError && <ErrorCard handleClick={resetError} />}
         </main>
     )
 }

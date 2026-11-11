@@ -1,6 +1,6 @@
 {
-  "name": "Scrim-s06igjj",
-  "description": "https://scrimba.com/memory-game-in-react-c0a3odsk39/~0xvz/s0ts6n53ol/head",
+  "name": "Scrim-s06j7vd",
+  "description": "https://scrimba.com/memory-game-in-react-c0a3odsk39/~05le",
   "scripts": {
     "start": "vite",
     "dev": "vite",
@@ -10,7 +10,6 @@
   "dependencies": {
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "html-entities": "2.5.2",
     "vite": "latest"
   },
   "devDependencies": {
